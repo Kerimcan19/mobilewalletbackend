@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { getJwtSecret } from "../config/env.js";
 
 export const authMiddleware = (req, res, next) => {
   try {
@@ -16,7 +17,7 @@ export const authMiddleware = (req, res, next) => {
 
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET || "secretkey"
+      getJwtSecret()
     );
 
     req.user = decoded; // userId burada

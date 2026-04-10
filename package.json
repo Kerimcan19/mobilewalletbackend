@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/app.js",
-    "build": "node ./node_modules/prisma/build/index.js generate"
+    "build": "node ./node_modules/prisma/build/index.js generate",
+    "start": "node src/app.js",
+    "db:deploy": "prisma migrate deploy"
   },
   "keywords": [],
   "author": "",

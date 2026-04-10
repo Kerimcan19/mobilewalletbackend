@@ -1,6 +1,7 @@
 import prisma from "../config/prisma.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { getJwtSecret } from "../config/env.js";
 
 export const registerUser = async (data) => {
   const { email, password, name } = data;
@@ -60,7 +61,7 @@ export const loginUser = async (data) => {
       userId: user.id,
       email: user.email,
     },
-    process.env.JWT_SECRET || "secretkey",
+    getJwtSecret(),
     { expiresIn: "1d" }
   );
 
