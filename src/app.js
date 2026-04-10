@@ -15,16 +15,12 @@ import { apiLimiter } from "./middlewares/rateLimit.middleware.js";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./config/swagger.js";
 
-// 1. APP OLUŞTUR
 const app = express();
 
-// 2. MIDDLEWARES
 app.use(cors());
 app.use(express.json());
 app.use(apiLimiter);
 
-
-// 3. ROUTES
 app.get("/", (req, res) => {
   res.send("Wallet API çalışıyor 🚀");
 });
@@ -38,21 +34,24 @@ app.use("/api/qr", qrRoutes);
 app.use("/api/qr-payment", qrPaymentRoutes);
 app.use("/api/admin", adminRoutes);
 
-// 4. HTTP SERVER
-const server = http.createServer(app);
+export default app;
 
-// 5. SOCKET.IO
-export const io = new Server(server, {
-  cors: { origin: "*" },
-});
+export let io = null;
+export let server = null;
 
-io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
-});
+if (!process.env.VERCEL) {
+  server = http.createServer(app);
+  io = new Server(server, {
+    cors: { origin: "*" },
+  });
 
-// 6. START SERVER (TEK YERDEN)
-const PORT = 5000;
+  io.on("connection", (socket) => {
+    console.log("User connected:", socket.id);
+  });
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  const PORT = process.env.PORT || 5000;
+
+  server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}

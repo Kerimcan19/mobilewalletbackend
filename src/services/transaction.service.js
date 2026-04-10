@@ -1,5 +1,4 @@
 import prisma from "../config/prisma.js";
-import { io } from "../app.js";
 
 export const transferMoney = async (senderUserId, receiverEmail, amount) => {
   if (amount <= 0) {
